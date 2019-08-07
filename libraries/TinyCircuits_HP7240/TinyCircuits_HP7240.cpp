@@ -1,12 +1,10 @@
 //*******************************************************************
 // TinyCircuits - HP7240 OLED Display Library
-// Written by: Hunter Hykes for TinyCircuits
+// Written by: Hunter Hykes and Ben Rose for TinyCircuits
 //
-// Initiated: Wed. 07/31/2019 @ 04:39PM
-//   Updated: Wed. 07/31/2019 @ 04:39PM
+// 08/02/2019
 //
 // Revision 0 - Original Release
-//	RELEASED: MM/DD/YYYY ***Not Yet Released***
 //
 //*******************************************************************
 
