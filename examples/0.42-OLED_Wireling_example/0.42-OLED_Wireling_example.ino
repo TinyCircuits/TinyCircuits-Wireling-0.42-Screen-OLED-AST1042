@@ -1,5 +1,5 @@
 /************************************************************************
- * HP7240 WhiskerBoard 0.42" OLED Display Demo/Test Code -
+ * HP7240 Wireling 0.42" OLED Display Demo/Test Code -
  * This code will display text and a Sprite at the same time when compiled. 
  *
  * Hardware by: TinyCircuits
@@ -15,10 +15,10 @@
 #include "TinyCircuits_HP7240.h"    // Library for OLED screen
 #include "exampleSprites.h"         // Holds arrays of example Sprites
 
-#define SCREEN_PORT 0               // Port used by the 0.42 OLED Whisker
+#define SCREEN_PORT 0               // Port used by the 0.42 OLED Wireling
 #define RESET_PIN (uint8_t)A0       // A0 corresponds to Port 0. Update if changing ports.
                                     // Port1: A1, Port2: A2, Port3: A3
-// Variable for the 0.42" Whisker screen
+// Variable for the 0.42" Wireling screen
 TinyCircuits_HP7240 TiniestScreen;
 
 #define xMax TiniestScreen.xMax
@@ -54,12 +54,12 @@ int bleh = 0;
 void setup() {
   SerialUSB.begin(9600);
   pinMode(4, OUTPUT);
-  digitalWrite(4, HIGH); // power Whisker Adapter TinyShield
+  digitalWrite(4, HIGH); // power Wireling Adapter TinyShield
   delay(10);
 
   TiniestScreen.begin();    // begin I2C communications with screen
   selectPort(SCREEN_PORT);  // This port# matches the one labeled on the adapter board
-  TiniestScreen.resetScreen(RESET_PIN);   // resets whisker screen MUST BE CALLED BEFORE init()
+  TiniestScreen.resetScreen(RESET_PIN);   // resets Wireling screen MUST BE CALLED BEFORE init()
   TiniestScreen.init();     // initialize screen
   clearOLED();              // Clear Display Buffer, isn't fully cleared here, frame buffer must be sent
   delay(2);
