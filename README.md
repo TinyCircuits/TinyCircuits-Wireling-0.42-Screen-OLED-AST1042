@@ -1,7 +1,7 @@
-# TinyCircuits Whisker 0.42 Screen OLED
+# TinyCircuits Wireling 0.42 Screen OLED
 # AST1042 Rev1
 
-The design files are located under design_files/ for the TinyCircuits AST1042 Rev 1 PCB. This is a whisker board which is the smallest our line has to offer, still packing an impressive 72 x 40 pixels in a 0.42" package for all your tiny display needs.
+The design files are located under design_files/ for the TinyCircuits AST1042 Rev 1 PCB. This is a Wireling board which is the smallest our line has to offer, still packing an impressive 72 x 40 pixels in a 0.42" package for all your tiny display needs.
 
 Format is in Cadsoft Eagle format - Eagle version 6.2 was used for the original design.
 
