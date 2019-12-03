@@ -15,6 +15,13 @@
 #include "TinyCircuits_HP7240.h"    // Library for OLED screen
 #include "exampleSprites.h"         // Holds arrays of example Sprites
 
+// Make Serial Monitor compatible for all TinyCircuits processors
+#if defined(ARDUINO_ARCH_AVR)
+  #define SerialMonitorInterface Serial
+#elif defined(ARDUINO_ARCH_SAMD)
+  #define SerialMonitorInterface SerialUSB
+#endif
+
 #define SCREEN_PORT 0               // Port used by the 0.42 OLED Wireling
 #define RESET_PIN (uint8_t)A0       // A0 corresponds to Port 0. Update if changing ports.
                                     // Port1: A1, Port2: A2, Port3: A3
@@ -52,11 +59,37 @@ int bunnySpeed = 2;
 int bleh = 0;
 
 void setup() {
-  SerialUSB.begin(9600);
+  SerialMonitorInterface.begin(9600);
   pinMode(4, OUTPUT);
   digitalWrite(4, HIGH); // power Wireling Adapter TinyShield
   delay(10);
+  
+  initScreen(); // Initialize the Screen
+}
 
+// Clear the screen, put new text on the screen -> clear to create scrolling effect 
+void loop() {
+  initScreen();
+  clearOLED();
+  drawSprites();
+  
+  textPos = 3*72;
+  TiniestScreen.setCursorX(textPos);
+  
+  TiniestScreen.printSSD(oledbuf, "Bun and Duck"); // text must be written after sprites
+  
+  TiniestScreen.sendFramebuffer(oledbuf);
+
+  delay(500);
+}
+
+void selectPort(int port) {
+  Wire.beginTransmission(0x70);
+  Wire.write(0x04 + port);
+  Wire.endTransmission(0x70);
+}
+
+void initScreen(void){
   TiniestScreen.begin();    // begin I2C communications with screen
   selectPort(SCREEN_PORT);  // This port# matches the one labeled on the adapter board
   TiniestScreen.resetScreen(RESET_PIN);   // resets Wireling screen MUST BE CALLED BEFORE init()
@@ -74,25 +107,6 @@ void setup() {
   display.setCursor(0, 0);
   display.print("0.42 OLED Test");
   
-}
-
-// Clear the screen, put new text on the screen -> clear to create scrolling effect 
-void loop() {
-  clearOLED();
-  drawSprites();
-  
-  textPos = 3*72;
-  TiniestScreen.setCursorX(textPos);
-  
-  TiniestScreen.printSSD(oledbuf, "Bun and Duck"); // text must be written after sprites
-  
-  TiniestScreen.sendFramebuffer(oledbuf);
-}
-
-void selectPort(int port) {
-  Wire.beginTransmission(0x70);
-  Wire.write(0x04 + port);
-  Wire.endTransmission(0x70);
 }
 
 /* The OLED screen is 72 by 40 pixels. The screen uses x and y coordinates,
