@@ -3,7 +3,7 @@
  * This code will display text and a Sprite at the same time when compiled. 
  *
  * Hardware by: TinyCircuits
- * Written by: Ben Rose, Laverena Wienclaw, & Hunter Hykes for TinyCircuits
+ * Written by: Ben Rose & Hunter Hykes for TinyCircuits
  *
  * Initiated: Mon. 11/20/2017 
  * Updated: Tue. 08/02/2019
@@ -56,7 +56,6 @@ int bufIndex = 0; // Buffer index in respect to the array of pixels on the scree
 int textPos = 0;  // Used to make text move left or right
 
 int bunnySpeed = 2;
-int bleh = 0;
 
 void setup() {
   SerialMonitorInterface.begin(9600);
