@@ -1,16 +1,16 @@
 /************************************************************************
  * HP7240 Wireling 0.42" OLED Display Demo/Test Code -
- * This code will display text and a Sprite at the same time when compiled. 
+ * This code will display text and Sprites at the same time when compiled. 
  *
  * Hardware by: TinyCircuits
- * Written by: Ben Rose & Hunter Hykes for TinyCircuits
+ * Written by: Hunter Hykes & Laveréna Wienclaw for TinyCircuits
  *
- * Initiated: Mon. 11/20/2017 
- * Updated: Tue. 08/02/2019
+ * Initiated: 07/20/2019 
+ * Updated: 12/04/2019
  ************************************************************************/
 
 #include <Wire.h>                   // For I2C communication
-#include <TinyScreen.h>             // For interfacing with TinyScreen+
+#include <Wireling.h>               // For interfacing with Wirelings
 #include "Font_042.h"               // The font displayed on the screen
 #include "TinyCircuits_HP7240.h"    // Library for OLED screen
 #include "exampleSprites.h"         // Holds arrays of example Sprites
@@ -31,7 +31,6 @@ TinyCircuits_HP7240 TiniestScreen;
 #define xMax TiniestScreen.xMax
 #define yMax TiniestScreen.yMax
 
-TinyScreen display = TinyScreen(TinyScreenPlus);
 
 // This is the data structure for a TinyScreen Sprite
 typedef struct {
@@ -55,57 +54,33 @@ uint8_t oledbuf[HP7240_BUFFERSIZE]; // Buffer to hold screen data
 int bufIndex = 0; // Buffer index in respect to the array of pixels on the screen
 int textPos = 0;  // Used to make text move left or right
 
-int bunnySpeed = 2;
-
 void setup() {
   SerialMonitorInterface.begin(9600);
-  pinMode(4, OUTPUT);
-  digitalWrite(4, HIGH); // power Wireling Adapter TinyShield
-  delay(10);
-  
+  Wireling.begin();
+  Wireling.selectPort(SCREEN_PORT);  // This port# matches the one labeled on the adapter board
   initScreen(); // Initialize the Screen
 }
 
 // Clear the screen, put new text on the screen -> clear to create scrolling effect 
 void loop() {
-  initScreen();
-  clearOLED();
+  clearOLED(); // Important for animations or scrolling text
   drawSprites();
   
   textPos = 3*72;
   TiniestScreen.setCursorX(textPos);
-  
   TiniestScreen.printSSD(oledbuf, "Bun and Duck"); // text must be written after sprites
   
   TiniestScreen.sendFramebuffer(oledbuf);
-
-  delay(500);
-}
-
-void selectPort(int port) {
-  Wire.beginTransmission(0x70);
-  Wire.write(0x04 + port);
-  Wire.endTransmission(0x70);
+  delay(1000);
 }
 
 void initScreen(void){
   TiniestScreen.begin();    // begin I2C communications with screen
-  selectPort(SCREEN_PORT);  // This port# matches the one labeled on the adapter board
   TiniestScreen.resetScreen(RESET_PIN);   // resets Wireling screen MUST BE CALLED BEFORE init()
   TiniestScreen.init();     // initialize screen
   clearOLED();              // Clear Display Buffer, isn't fully cleared here, frame buffer must be sent
   delay(2);
   TiniestScreen.sendFramebuffer(oledbuf); // Send Cleared Buffer
-
-  // Initialize appearance of TinyScreen
-  display.begin();
-  display.setFlip(true);
-  display.setBrightness(15);
-  display.setFont(thinPixel7_10ptFontInfo);
-  display.fontColor(TS_8b_White, TS_8b_Black); // white text, black background
-  display.setCursor(0, 0);
-  display.print("0.42 OLED Test");
-  
 }
 
 /* The OLED screen is 72 by 40 pixels. The screen uses x and y coordinates,
