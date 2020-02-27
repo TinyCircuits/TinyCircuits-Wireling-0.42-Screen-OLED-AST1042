@@ -1,0 +1,4 @@
+[submodule "libraries/TinyCircuits-TinierScreen-Lib"]
+	path = libraries/TinyCircuits-TinierScreen-Lib
+	url = https://github.com/TinyCircuits/TinyCircuits-TinierScreen-Lib
+	branch = master
